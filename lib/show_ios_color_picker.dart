@@ -49,15 +49,15 @@ class IOSColorPickerController {
   /// iOS Native color Picker clone, for all Platforms.
   ///
   /// [startingColor] is [null] then the default color will be green
- Future<void> showIOSCustomColorPicker({
+Future<void> showIOSCustomColorPicker({
   required BuildContext context,
-  required ValueChanged<Color> onActionTap, // <-- now only triggered on button tap
+  required ValueChanged<Color> onActionTap, // triggers only on button tap
   Color? startingColor,
   Widget? actionWidget,
 }) async {
   colorController = ColorController(startingColor ?? selectedColor);
 
-  final Color? pickedColor = await showModalBottomSheet<Color>(
+  await showModalBottomSheet<Color>(
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black26,
     isScrollControlled: true,
@@ -65,22 +65,17 @@ class IOSColorPickerController {
     builder: (context) {
       return IosColorPicker(
         onColorSelected: (value) {
-          // optional: update internal selected color
+          // keep existing slider updates intact
           selectedColor = value;
         },
         actionWidget: actionWidget,
         onActionTap: (value) {
           selectedColor = value;
-          onActionTap(selectedColor); // <-- called once on tap
+          onActionTap(selectedColor); // triggered only when button tapped
         },
       );
     },
   );
-
-  // optional: update selected color after closing modal
-  if (pickedColor != null) {
-    selectedColor = pickedColor;
-  }
 }
 
   /// Cancel the color subscription
