@@ -49,26 +49,39 @@ class IOSColorPickerController {
   /// iOS Native color Picker clone, for all Platforms.
   ///
   /// [startingColor] is [null] then the default color will be green
-  void showIOSCustomColorPicker({
-    required BuildContext context,
-    required ValueChanged<Color> onColorChanged,
-    Color? startingColor,
-  }) async {
-    colorController = ColorController(startingColor ?? selectedColor);
-    return showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.black26,
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return IosColorPicker(
-            onColorSelected: (value) {
-              selectedColor = value;
-              onColorChanged(selectedColor);
-            },
-          );
-        });
+ Future<void> showIOSCustomColorPicker({
+  required BuildContext context,
+  required ValueChanged<Color> onActionTap, // <-- now only triggered on button tap
+  Color? startingColor,
+  Widget? actionWidget,
+}) async {
+  colorController = ColorController(startingColor ?? selectedColor);
+
+  final Color? pickedColor = await showModalBottomSheet<Color>(
+    backgroundColor: Colors.transparent,
+    barrierColor: Colors.black26,
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return IosColorPicker(
+        onColorSelected: (value) {
+          // optional: update internal selected color
+          selectedColor = value;
+        },
+        actionWidget: actionWidget,
+        onActionTap: (value) {
+          selectedColor = value;
+          onActionTap(selectedColor); // <-- called once on tap
+        },
+      );
+    },
+  );
+
+  // optional: update selected color after closing modal
+  if (pickedColor != null) {
+    selectedColor = pickedColor;
   }
+}
 
   /// Cancel the color subscription
   void cancelColorSubscription() {
