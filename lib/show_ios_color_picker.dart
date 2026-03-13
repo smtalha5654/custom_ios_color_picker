@@ -54,6 +54,7 @@ Future<void> showIOSCustomColorPicker({
   required ValueChanged<Color> onActionTap, // triggers only on button tap
   Color? startingColor,
   Widget? actionWidget,
+  required ValueChanged<Color> onColorChanged,
 }) async {
   colorController = ColorController(startingColor ?? selectedColor);
 
@@ -64,10 +65,10 @@ Future<void> showIOSCustomColorPicker({
     context: context,
     builder: (context) {
       return IosColorPicker(
-        onColorSelected: (value) {
-          // keep existing slider updates intact
-          selectedColor = value;
-        },
+       onColorSelected: (value) {
+              selectedColor = value;
+              onColorChanged(selectedColor);
+            },
         actionWidget: actionWidget,
         onActionTap: (value) {
           selectedColor = value;
