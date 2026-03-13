@@ -10,19 +10,14 @@ import 'history_colors.dart';
 class IosColorPicker extends StatefulWidget {
   const IosColorPicker({
     super.key,
-    required this.onColorSelected,
-    this.actionWidget,
-    this.onActionTap, // <-- new callback
+    required this.onColorSelected,  // keeps your existing slider callback
+    this.actionWidget,              // optional custom button
+    this.onActionTap,               // new callback for action tap
   });
 
-  /// Returns the color constantly while sliding
-  final ValueChanged<Color> onColorSelected;
-
-  /// Custom action widget (like Done button)
-  final Widget? actionWidget;
-
-  /// Called only when action widget is tapped
-  final ValueChanged<Color>? onActionTap;
+  final ValueChanged<Color> onColorSelected; // existing slider callback
+  final Widget? actionWidget;               // optional button
+  final ValueChanged<Color>? onActionTap;   // triggers on action button tap
 
   @override
   State<IosColorPicker> createState() => _IosColorPickerState();
@@ -84,35 +79,35 @@ class _IosColorPickerState extends State<IosColorPicker> {
                           color: Colors.white,
                           fontWeight: FontWeight.w700),
                     ),
-                   ValueListenableBuilder<Color>(
-                      valueListenable: colorController,
-                      builder: (context, color, child) {
-                        return GestureDetector(
-                          onTap: () {
-                            // Call the new callback
-                            if (widget.onActionTap != null) {
-                              widget.onActionTap!(color);
-                            }
-
-                            // Close the picker and return color
-                            Navigator.pop(context, color);
-                          },
-                          child: widget.actionWidget ??
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xff3A3A3B),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Color(0xffA4A4AA),
-                                  size: 20,
-                                ),
-                              ),
-                        );
+                 ValueListenableBuilder<Color>(
+                  valueListenable: colorController,
+                  builder: (context, color, child) {
+                    return GestureDetector(
+                      onTap: () {
+                        // Call the new callback only when this button is tapped
+                        if (widget.onActionTap != null) {
+                          widget.onActionTap!(color);
+                        }
+                
+                        // Close the picker and return the color
+                        Navigator.pop(context, color);
                       },
-                    ),
+                      child: widget.actionWidget ??
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Color(0xff3A3A3B),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              color: Color(0xffA4A4AA),
+                              size: 20,
+                            ),
+                          ),
+                    );
+                  },
+                ),
                   ],
                 ),
               ),
