@@ -3,9 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:ios_color_picker/custom_picker/shared.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:super_tooltip/super_tooltip.dart';
+
 import 'color_observer.dart';
 import 'extensions.dart';
 import 'helpers/cache_helper.dart';
+
+/// SuperTooltip config matching previous behavior (super_tooltip 2.1.x API).
+const _historyTooltipStyle = TooltipStyle(
+  hasShadow: false,
+  bubbleDimensions: EdgeInsets.zero,
+);
+const _historyTooltipArrow = ArrowConfiguration(length: 8, tipDistance: 17);
+const _historyTooltipBarrier = BarrierConfiguration(
+  show: false,
+  sigmaX: 16,
+  sigmaY: 16,
+);
+const _historyTooltipPosition = PositionConfiguration(
+  preferredDirection: TooltipDirection.up,
+);
 
 class HistoryColors extends StatefulWidget {
   final ValueChanged<Color> onColorChanged;
@@ -52,8 +68,7 @@ class _HistoryColorsState extends State<HistoryColors> {
     }
     if (empty) {
       historyColors.toStringList().forEach((v) {});
-      CacheHelper()
-          .setData(key: "history_colors", value: historyColors.toStringList());
+      CacheHelper().setData(key: "history_colors", value: historyColors.toStringList());
       if (page > 1 && colorPage != page && !delete) {
         pageController.jumpToPage(page);
         colorPage = page;
@@ -108,10 +123,8 @@ class _HistoryColorsState extends State<HistoryColors> {
                   mainAxisSpacing: 12,
                   crossAxisSpacing: ((maxWidth(context) - 304) / 5),
                   dragStartBehavior: DragStartBehavior.down,
-                  children: List.generate(
-                      historyColors.length >= 10
-                          ? (historyColors.length - (pageIndex * 10)) + 1
-                          : historyColors.length + 1, (index) {
+                  children:
+                      List.generate(historyColors.length >= 10 ? (historyColors.length - (pageIndex * 10)) + 1 : historyColors.length + 1, (index) {
                     if (index + (pageIndex * 10) == historyColors.length) {
                       return InkWell(
                         onTap: () {
@@ -119,11 +132,7 @@ class _HistoryColorsState extends State<HistoryColors> {
                           setHistory();
                         },
                         child: ConstrainedBox(
-                          constraints: const BoxConstraints(
-                              minHeight: 30,
-                              minWidth: 30,
-                              maxWidth: 30,
-                              maxHeight: 30),
+                          constraints: const BoxConstraints(minHeight: 30, minWidth: 30, maxWidth: 30, maxHeight: 30),
                           child: Container(
                             height: 30,
                             width: 30,
@@ -149,39 +158,27 @@ class _HistoryColorsState extends State<HistoryColors> {
                         });
                         showTooltip();
                       },
-                      showBarrier: false,
-                      // showDropBoxFilter: true,
-                      hasShadow: false,
-                      sigmaY: 16,
-                      sigmaX: 16,
-                      arrowLength: 8,
-                      arrowTipDistance: 17,
-                      bubbleDimensions: EdgeInsets.zero,
-                      popupDirection: TooltipDirection.up,
-                      controller: toolTip == (index + (pageIndex * 10))
-                          ? _tipController
-                          : null,
+                      style: _historyTooltipStyle,
+                      arrowConfig: _historyTooltipArrow,
+                      barrierConfig: _historyTooltipBarrier,
+                      positionConfig: _historyTooltipPosition,
+                      controller: toolTip == (index + (pageIndex * 10)) ? _tipController : null,
                       content: InkWell(
                         onTap: () {
                           historyColors.removeAt((index + (pageIndex * 10)));
                           setHistory(delete: true);
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                           child: Text(
                             "Delete",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: Colors.red),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
                           ),
                         ),
                       ),
                       child: InkWell(
                         onTap: () {
-                          colorController.updateColor(
-                              historyColors[(index + (pageIndex * 10))]);
+                          colorController.updateColor(historyColors[(index + (pageIndex * 10))]);
                           widget.onColorChanged(colorController.value);
                           _tipController.hideTooltip();
                           toolTip = -1;
@@ -191,24 +188,17 @@ class _HistoryColorsState extends State<HistoryColors> {
                           alignment: Alignment.center,
                           children: [
                             ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                  minHeight: 30,
-                                  minWidth: 30,
-                                  maxWidth: 30,
-                                  maxHeight: 30),
+                              constraints: const BoxConstraints(minHeight: 30, minWidth: 30, maxWidth: 30, maxHeight: 30),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color:
-                                      historyColors[(index + (pageIndex * 10))],
+                                  color: historyColors[(index + (pageIndex * 10))],
                                 ),
                               ),
                             ),
-                            if (colorController.value.toHex() ==
-                                historyColors[(index + (pageIndex * 10))]
-                                    .toHex())
+                            if (colorController.value.toHex() == historyColors[(index + (pageIndex * 10))].toHex())
                               Container(
                                 height: 24,
                                 width: 24,
