@@ -292,7 +292,8 @@ class _IosColorPickerState extends State<IosColorPicker> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
                         if (_hexPreviewColor != null)
                           Container(
