@@ -99,7 +99,7 @@ class _IosColorPickerState extends State<IosColorPicker> {
   Widget build(BuildContext context) {
     final keyboardPadding = MediaQuery.of(context).viewInsets.bottom;
     final bool isKeyboardOpen = keyboardPadding > 0;
-    final double sheetBaseHeight = 300 + componentsHeight(context) + 74;
+    final double sheetBaseHeight = 240 + componentsHeight(context) + 74;
 
     return Column(
       children: [
@@ -117,7 +117,7 @@ class _IosColorPickerState extends State<IosColorPicker> {
           width: maxWidth(context),
           height: isKeyboardOpen ? null : sheetBaseHeight,
           constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.9,
+            maxHeight: MediaQuery.of(context).size.height * 0.7,
           ),
           decoration: BoxDecoration(
             color: backgroundColor.withValues(alpha: 0.98),
@@ -228,65 +228,66 @@ class _IosColorPickerState extends State<IosColorPicker> {
                   // const SizedBox(
                   //   height: 44,
                   // ),
-                  Divider(
-                    height: 44,
-                    thickness: 0.2,
-                    indent: 17,
-                    endIndent: 17,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            height: 78,
-                            width: 78,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            margin: const EdgeInsets.only(
-                              left: 16,
-                            ),
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Transform.scale(
-                              scale: 1.5,
-                              child: Transform.rotate(
-                                angle: 0.76,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: Container(color: Colors.white)),
-                                    Expanded(
-                                        child: Container(color: Colors.black)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          ValueListenableBuilder<Color>(
-                            valueListenable: colorController,
-                            builder: (context, color, child) {
-                              return Container(
-                                height: 78,
-                                width: 78,
-                                margin: const EdgeInsets.only(
-                                  left: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                    color: color),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  // Divider(
+                  //   height: 44,
+                  //   thickness: 0.2,
+                  //   indent: 17,
+                  //   endIndent: 17,
+                  // ),
+                  // Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     Stack(
+                  //       children: [
+                  //         Container(
+                  //           height: 78,
+                  //           width: 78,
+                  //           clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //           margin: const EdgeInsets.only(
+                  //             left: 16,
+                  //           ),
+                  //           decoration: const BoxDecoration(
+                  //             borderRadius: BorderRadius.all(
+                  //               Radius.circular(10),
+                  //             ),
+                  //           ),
+                  //           child: Transform.scale(
+                  //             scale: 1.5,
+                  //             child: Transform.rotate(
+                  //               angle: 0.76,
+                  //               child: Row(
+                  //                 children: [
+                  //                   Expanded(
+                  //                       child: Container(color: Colors.white)),
+                  //                   Expanded(
+                  //                       child: Container(color: Colors.black)),
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         ValueListenableBuilder<Color>(
+                  //           valueListenable: colorController,
+                  //           builder: (context, color, child) {
+                  //             return Container(
+                  //               height: 78,
+                  //               width: 78,
+                  //               margin: const EdgeInsets.only(
+                  //                 left: 16,
+                  //               ),
+                  //               decoration: BoxDecoration(
+                  //                   borderRadius: const BorderRadius.all(
+                  //                     Radius.circular(10),
+                  //                   ),
+                  //                   color: color),
+                  //             );
+                  //           },
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
+
                   const SizedBox(height: 14),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
